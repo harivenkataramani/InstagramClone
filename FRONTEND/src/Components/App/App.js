@@ -6,6 +6,7 @@ import Home from "../Home/home";
 import Profile from "../Profile/profile";
 import SignIn from "../Auth/signIn";
 import SignUp from "../Auth/signUp";
+import CreatePosts from "../Posts/CreatePosts/createPosts";
 import "../../Components/App/app.css";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <Route exact path="/login" component={SignIn} />
         <Route exact path="/register" component={SignUp} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/create" component={CreatePosts} />
         <Route path="/" component={Home} />
       </Switch>
     </div>
