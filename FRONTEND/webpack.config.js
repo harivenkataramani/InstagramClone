@@ -8,6 +8,10 @@ module.exports = {
     path: path.join(__dirname, "/dist"),
     filename: "index_bundle.js",
   },
+  //line# 12-14 is needed for react-router-dom to work
+  devServer: {
+    historyApiFallback: true,
+  },
   resolve: {
     extensions: [".js", ".jsx"],
   },
@@ -24,25 +28,7 @@ module.exports = {
       {
         test: /\.css$/,
         exclude: /node_modules/,
-        use: [
-          { loader: "style-loader" },
-          {
-            loader: "css-loader",
-            options: {
-              modules: {
-                localIdentName: "[name]__[local]___[hash:base64:5]",
-              },
-              sourceMap: true,
-            },
-          },
-          {
-            loader: "postcss-loader",
-            options: {
-              ident: "postcss",
-              plugins: () => [autoprefixer({})],
-            },
-          },
-        ],
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
 
       {
