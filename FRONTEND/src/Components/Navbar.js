@@ -1,9 +1,11 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
+import * as actions from "../Redux/Actions/index";
+
 const renderLinks = (props) => {
-  console.log(props, "userSds");
+  const history = useHistory();
   if (props.userDetails) {
     return [
       <li>
@@ -12,6 +14,15 @@ const renderLinks = (props) => {
       <li>
         <Link to="/create">Create</Link>
       </li>,
+      <button
+        className="btn waves-effect waves-light #64b5f6 blue darken-1"
+        onClick={() => {
+          props.logoutUser();
+          history.push("/login");
+        }}
+      >
+        Logout
+      </button>,
     ];
   } else {
     return [
@@ -45,10 +56,16 @@ const Navbar = (props) => {
   );
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logoutUser: () => dispatch(actions.onLogout()),
+  };
+};
+
 const mapStateToProps = (state) => {
   return {
     userDetails: state.authReducer.authUserDetails,
   };
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

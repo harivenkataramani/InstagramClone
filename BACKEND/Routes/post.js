@@ -46,4 +46,40 @@ router.get("/myposts", authorization, (req, res) => {
     });
 });
 
+router.put("/like", authorization, (req, res) => {
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $push: { likes: req.user._id },
+    },
+    {
+      new: true,
+    }
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    } else {
+      res.json({ result });
+    }
+  });
+});
+
+router.put("/unlike", authorization, (req, res) => {
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $pull: { likes: req.user._id },
+    },
+    {
+      new: true,
+    }
+  ).exec((err, result) => {
+    if (err) {
+      return res.status(400).json({ error: err });
+    } else {
+      res.json({ result });
+    }
+  });
+});
+
 module.exports = router;

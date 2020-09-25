@@ -1,12 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import * as actions from "../../Redux/Actions/index";
 import "./home.css";
 
 const Home = (props) => {
-  const [postArray, setPostArray] = useState([]);
-
   useEffect(() => {
     console.log();
     props.fetchPosts();
@@ -43,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    allPostsData: state.createPostReducer.posts,
+    allPostsData: state.createPostReducer.myposts,
   };
 };
 

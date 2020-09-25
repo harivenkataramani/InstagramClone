@@ -35,6 +35,13 @@ export const authFailed = () => {
   };
 };
 
+export const onLogout = () => {
+  localStorage.clear();
+  return {
+    type: actionTypes.LOGOUT_USER,
+  };
+};
+
 export const initsignUpUser = (name, email, password) => {
   return (dispatch) => {
     const bodyData = {
@@ -72,7 +79,7 @@ export const initsignInUser = (email, password) => {
           dispatch(signingUpError(response.data.error));
         } else {
           localStorage.setItem("token", response.data.token);
-          localStorage.setItem("user", response.data.user);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
           dispatch(signInpUser(response.data.token));
           dispatch(userDetails(response.data.user));
         }

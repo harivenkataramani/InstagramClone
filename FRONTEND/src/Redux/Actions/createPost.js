@@ -35,7 +35,7 @@ export const fetchPostsSuccess = (posts) => {
   };
 };
 
-export const createPost = (body, title, url) => {
+export const createPost = (body, title, url, history) => {
   return (dispatch) => {
     const bodyData = {
       body,
@@ -52,6 +52,7 @@ export const createPost = (body, title, url) => {
         if (response.error) {
           dispatch(createNewPostFail(response.data.error));
         }
+        history.push("/");
         dispatch(createNewPostSuccess(response.data.post));
       })
       .catch((error) => {
@@ -61,7 +62,7 @@ export const createPost = (body, title, url) => {
   };
 };
 
-export const uploadImage = (bodyData, title, body) => {
+export const uploadImage = (bodyData, title, body, history) => {
   return (dispatch) => {
     axios
       .post(
@@ -70,7 +71,7 @@ export const uploadImage = (bodyData, title, body) => {
       )
       .then((response) => {
         dispatch(imgUploadSucess(response.data.secure_url));
-        dispatch(createPost(body, title, response.data.secure_url));
+        dispatch(createPost(body, title, response.data.secure_url, history));
       })
       .catch((error) => {
         console.log("error--------", error);

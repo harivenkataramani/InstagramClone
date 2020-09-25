@@ -19,6 +19,14 @@ const reducer = (state = initialState, action) => {
       return { ...state, authUserDetails: action.user, error: "" };
     case actionTypes.AUTH_FAIL:
       return { ...state, error: "Something Went Wrong" };
+    case actionTypes.LOGOUT_USER:
+      return {
+        ...state,
+        signUpMessage: "",
+        error: "",
+        authToken: "",
+        authUserDetails: null,
+      };
     default:
       return state;
   }

@@ -15,9 +15,8 @@ const App = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
-      history.push("/");
       props.userData(user);
     } else {
       history.push("/login");
@@ -31,7 +30,7 @@ const App = (props) => {
         <Route exact path="/register" component={SignUp} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/create" component={CreatePosts} />
-        <Route path="/" component={Home} />
+        <Route exact path="/" component={Home} />
       </Switch>
     </div>
   );

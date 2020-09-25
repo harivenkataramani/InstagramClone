@@ -9,16 +9,12 @@ const CreatePosts = (props) => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
-  // const [imageURL, setImageURL] = useState("");
 
-  useEffect(() => {
-    // if (props.imageURL) {
-    //   setImageURL(props.imageURL);
-    // }
-    if (props.posts.length > 0) {
-      history.push("/");
-    }
-  }, [props.imageURL, props.posts]);
+  // useEffect(() => {
+  //   if (props.posts) {
+  //     history.push("/");
+  //   }
+  // }, [props.posts]);
 
   const postDetails = () => {
     const data = new FormData();
@@ -27,7 +23,7 @@ const CreatePosts = (props) => {
     data.append("upload_preset", "instagram-clone");
     //name of the clouidanary image
     data.append("cloud_name", "hvrimagecloud");
-    props.uploadImage(data, title, body);
+    props.uploadImage(data, title, body, history);
   };
 
   return (
@@ -73,16 +69,16 @@ const CreatePosts = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    uploadImage: (bodyData, title, body) =>
-      dispatch(actions.uploadImage(bodyData, title, body)),
+    uploadImage: (bodyData, title, body, history) =>
+      dispatch(actions.uploadImage(bodyData, title, body, history)),
   };
 };
 
-const mapStateToProps = (state) => {
-  return {
-    imageURL: state.createPostReducer.imageURL,
-    posts: state.createPostReducer.posts,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     imageURL: state.createPostReducer.imageURL,
+//     posts: state.createPostReducer.createdPost,
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreatePosts);
+export default connect(null, mapDispatchToProps)(CreatePosts);
