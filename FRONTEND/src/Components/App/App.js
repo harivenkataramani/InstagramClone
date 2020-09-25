@@ -1,5 +1,6 @@
-import React from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Switch, Route, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
 import Navbar from "../Navbar";
 import Home from "../Home/home";
@@ -8,8 +9,20 @@ import SignIn from "../Auth/signIn";
 import SignUp from "../Auth/signUp";
 import CreatePosts from "../Posts/CreatePosts/createPosts";
 import "../../Components/App/app.css";
+import * as actions from "../../Redux/Actions/index";
 
-const App = () => {
+const App = (props) => {
+  const history = useHistory();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      history.push("/");
+      props.userData(user);
+    } else {
+      history.push("/login");
+    }
+  }, []);
   return (
     <div>
       <Navbar />
@@ -24,4 +37,11 @@ const App = () => {
   );
 };
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userData: (authUserDetails) =>
+      dispatch(actions.userDetails(authUserDetails)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

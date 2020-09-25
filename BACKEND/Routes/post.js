@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const Post = mongoose.model("Post");
 const authorization = require("../Middleware/requireLogin");
 
-router.get("/allposts", (req, res) => {
+router.get("/allposts", authorization, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
     .then((posts) => {
@@ -16,14 +16,15 @@ router.get("/allposts", (req, res) => {
 });
 
 router.post("/createpost", authorization, (req, res) => {
-  const { title, body } = req.body;
-  if (!title || !body) {
+  const { title, body, url } = req.body;
+  if (!title || !body || !url) {
     return res.status(400).json({ error: "Please enter all the details" });
   }
   req.user.password = undefined;
   const post = new Post({
     title,
     body,
+    photo: url,
     postedBy: req.user,
   });
   post

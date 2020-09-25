@@ -1,11 +1,37 @@
-import React, { useState } from "react";
-import "./auth.css";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
+import M from "materialize-css";
 
-const SignUp = () => {
+import "./auth.css";
+import * as actions from "../../Redux/Actions/index";
+
+const SignUp = (props) => {
+  const history = useHistory();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (props.successMessage) {
+      M.toast({ html: props.successMessage });
+      history.push("/login");
+    }
+  }, [props.successMessage]);
+
+  const signUpUser = (e) => {
+    e.preventDefault();
+    if (
+      !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+        email
+      )
+    ) {
+      M.toast({ html: "Please enter a valid email" });
+    } else {
+      props.onUserSignUp(name, email, password);
+    }
+  };
+
   return (
     <div className="login">
       <div className="card login__card input-field">
@@ -34,7 +60,10 @@ const SignUp = () => {
             setPassword(e.target.value);
           }}
         />
-        <button className="btn waves-effect waves-light #64b5f6 blue lighten-2">
+        <button
+          className="btn waves-effect waves-light #64b5f6 blue lighten-2"
+          onClick={signUpUser}
+        >
           SignUp
         </button>
         <h5>
@@ -47,4 +76,17 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onUserSignUp: (name, email, password) =>
+      dispatch(actions.initsignUpUser(name, email, password)),
+  };
+};
+
+const mapStateToProps = (state) => {
+  return {
+    successMessage: state.authReducer.signUpMessage,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
