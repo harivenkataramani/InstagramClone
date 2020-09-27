@@ -46,6 +46,29 @@ const createPostreducer = (state = initialState, action) => {
           }),
         ],
       };
+    case actionTypes.COMMENT_ON_POST:
+      return {
+        ...state,
+        uploadError: "",
+        myposts: [
+          ...state.myposts.map((post) => {
+            return post._id === action.result._id
+              ? { ...post, comments: action.result.comments }
+              : post;
+          }),
+        ],
+      };
+    case actionTypes.DELETE_POST:
+      console.log(action.result);
+      return {
+        ...state,
+        uploadError: "",
+        myposts: [
+          ...state.myposts.filter((post) => {
+            return post._id !== action.result._id;
+          }),
+        ],
+      };
     default:
       return state;
   }

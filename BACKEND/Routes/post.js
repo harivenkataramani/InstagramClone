@@ -7,6 +7,7 @@ const authorization = require("../Middleware/requireLogin");
 router.get("/allposts", authorization, (req, res) => {
   Post.find()
     .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
     .then((posts) => {
       res.status(200).json({ posts });
     })
@@ -77,10 +78,55 @@ router.put("/unlike", authorization, (req, res) => {
     if (err) {
       return res.status(400).json({ error: err });
     } else {
-      console.log("in unlike", result);
       res.json({ result });
     }
   });
+});
+
+router.put("/comment", authorization, (req, res) => {
+  let comment = {
+    text: req.body.text,
+    postedBy: req.user._id,
+  };
+  console.log(comment, "****", req.body);
+  Post.findByIdAndUpdate(
+    req.body.postId,
+    {
+      $push: { comments: comment },
+    },
+    {
+      new: true,
+    }
+  )
+    .populate("comments.postedBy", "_id name")
+    .populate("postedBy", "_id name")
+    .exec((err, result) => {
+      if (err) {
+        return res.status(400).json({ error: err });
+      } else {
+        res.json({ result });
+      }
+    });
+});
+
+router.delete("/deletePost/:postid", authorization, (req, res) => {
+  Post.find({ _id: req.params.postid })
+    .populate("postedBy", "_id")
+    .exec((err, post) => {
+      if (err || !post) {
+        return res.status(400).json({ error: err });
+      }
+      if (post[0].postedBy._id.toString() === req.user._id.toString()) {
+        post[0]
+          .remove()
+          .then((result) => {
+            res.json({ result });
+          })
+          .catch((err) => {
+            console.log("**error", err, "error**");
+          });
+      }
+    });
 });
 
 module.exports = router;

@@ -49,6 +49,20 @@ export const triggerunlikeposts = (result) => {
   };
 };
 
+export const postComment = (result) => {
+  return {
+    type: actionTypes.COMMENT_ON_POST,
+    result,
+  };
+};
+
+export const deletePostSuccess = (result) => {
+  return {
+    type: actionTypes.DELETE_POST,
+    result,
+  };
+};
+
 export const createPost = (body, title, url, history) => {
   return (dispatch) => {
     const bodyData = {
@@ -147,6 +161,46 @@ export const unlikePost = (userid) => {
       })
       .then((response) => {
         dispatch(triggerunlikeposts(response.data.result));
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const addComments = (text, postId) => {
+  return (dispatch) => {
+    const bodyData = {
+      postId,
+      text,
+    };
+    axios
+      .put("http://localhost:5000/comment", bodyData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        dispatch(postComment(response.data.result));
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const deletePost = (userid) => {
+  return (dispatch) => {
+    axios
+      .delete(`http://localhost:5000/deletePost/${userid}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        dispatch(deletePostSuccess(response.data.result));
       })
       .catch((error) => {
         console.log("error message", error.message);

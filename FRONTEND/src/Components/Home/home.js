@@ -15,7 +15,18 @@ const Home = (props) => {
       {props.allPostsData.map((item) => {
         return (
           <div className="card home__card" key={item._id}>
-            <h5>{item.postedBy.name}</h5>
+            <h5>
+              {item.postedBy.name}
+              {item.postedBy._id === user._id && (
+                <i
+                  className="material-icons"
+                  style={{ float: "right", cursor: "pointer" }}
+                  onClick={() => props.dispatchDeletePost(item._id)}
+                >
+                  delete
+                </i>
+              )}
+            </h5>
             <div className="card-image">
               <img alt="DP" src={item.photo} />
             </div>
@@ -37,13 +48,28 @@ const Home = (props) => {
                   favorite
                 </i>
               )}
-
-              {/* <i className="material-icons">thumb_up</i>
-              <i className="material-icons">thumb_down</i> */}
               <h6>{item.likes.length} likes</h6>
               <h6>{item.title}</h6>
               <p>{item.body}</p>
-              <input type="text" placeholder="please add a comment" />
+              {item.comments.map((comment) => {
+                return (
+                  <h6 key={comment._id}>
+                    <span style={{ fontWeight: "600" }}>
+                      {comment.postedBy.name}
+                    </span>
+                    &nbsp;
+                    {comment.text}
+                  </h6>
+                );
+              })}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  props.dispatchPostComment(e.target[0].value, item._id);
+                }}
+              >
+                <input type="text" placeholder="please add a comment" />
+              </form>
             </div>
           </div>
         );
@@ -57,6 +83,9 @@ const mapDispatchToProps = (dispatch) => {
     fetchPosts: () => dispatch(actions.fetchAllPosts()),
     dispatchlikePost: (userid) => dispatch(actions.likePost(userid)),
     dispatchunlikePost: (userid) => dispatch(actions.unlikePost(userid)),
+    dispatchPostComment: (text, userid) =>
+      dispatch(actions.addComments(text, userid)),
+    dispatchDeletePost: (userid) => dispatch(actions.deletePost(userid)),
   };
 };
 

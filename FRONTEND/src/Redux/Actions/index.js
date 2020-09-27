@@ -5,6 +5,13 @@ export {
   onLogout,
 } from "./authUser";
 
-export { uploadImage, fetchAllPosts, likePost, unlikePost } from "./createPost";
+export {
+  uploadImage,
+  fetchAllPosts,
+  likePost,
+  unlikePost,
+  addComments,
+  deletePost,
+} from "./createPost";
 
 export { fetchMyPosts } from "./profileActions";
