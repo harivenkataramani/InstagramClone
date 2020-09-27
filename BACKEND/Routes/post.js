@@ -77,6 +77,7 @@ router.put("/unlike", authorization, (req, res) => {
     if (err) {
       return res.status(400).json({ error: err });
     } else {
+      console.log("in unlike", result);
       res.json({ result });
     }
   });

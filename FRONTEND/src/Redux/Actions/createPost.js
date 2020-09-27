@@ -35,6 +35,20 @@ export const fetchPostsSuccess = (posts) => {
   };
 };
 
+export const triggerlikeposts = (result) => {
+  return {
+    type: actionTypes.ON_LIKE_POST,
+    result,
+  };
+};
+
+export const triggerunlikeposts = (result) => {
+  return {
+    type: actionTypes.ON_UNLIKE_POST,
+    result,
+  };
+};
+
 export const createPost = (body, title, url, history) => {
   return (dispatch) => {
     const bodyData = {
@@ -91,6 +105,48 @@ export const fetchAllPosts = () => {
       .then((response) => {
         console.log(response.data.posts);
         dispatch(fetchPostsSuccess(response.data.posts));
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const likePost = (userid) => {
+  return (dispatch) => {
+    const bodyData = {
+      postId: userid,
+    };
+    axios
+      .put("http://localhost:5000/like", bodyData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        dispatch(triggerlikeposts(response.data.result));
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const unlikePost = (userid) => {
+  return (dispatch) => {
+    const bodyData = {
+      postId: userid,
+    };
+    axios
+      .put("http://localhost:5000/unlike", bodyData, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        dispatch(triggerunlikeposts(response.data.result));
       })
       .catch((error) => {
         console.log("error message", error.message);

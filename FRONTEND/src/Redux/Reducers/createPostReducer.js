@@ -8,7 +8,6 @@ const initialState = {
 };
 
 const createPostreducer = (state = initialState, action) => {
-  console.log();
   switch (action.type) {
     case actionTypes.UPLOAD_SUCCESS:
       return { ...state, imageURL: action.data, uploadError: "" };
@@ -23,6 +22,30 @@ const createPostreducer = (state = initialState, action) => {
       return { ...state, myposts: action.posts };
     case actionTypes.CREATE_POST_FAIL:
       return { ...state, uploadError: action.errorMsg };
+    case actionTypes.ON_LIKE_POST:
+      return {
+        ...state,
+        uploadError: "",
+        myposts: [
+          ...state.myposts.map((post) => {
+            return post._id === action.result._id
+              ? { ...post, likes: action.result.likes }
+              : post;
+          }),
+        ],
+      };
+    case actionTypes.ON_UNLIKE_POST:
+      return {
+        ...state,
+        uploadError: "",
+        myposts: [
+          ...state.myposts.map((post) => {
+            return post._id === action.result._id
+              ? { ...post, likes: action.result.likes }
+              : post;
+          }),
+        ],
+      };
     default:
       return state;
   }

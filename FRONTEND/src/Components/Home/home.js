@@ -6,9 +6,10 @@ import "./home.css";
 
 const Home = (props) => {
   useEffect(() => {
-    console.log();
     props.fetchPosts();
   }, []);
+
+  const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="home">
       {props.allPostsData.map((item) => {
@@ -19,9 +20,27 @@ const Home = (props) => {
               <img alt="DP" src={item.photo} />
             </div>
             <div className="card-content">
-              <i className="material-icons" style={{ color: "red" }}>
-                favorite
-              </i>
+              {item.likes.includes(user._id) ? (
+                <i
+                  className="material-icons"
+                  style={{ color: "red", cursor: "pointer" }}
+                  onClick={() => props.dispatchunlikePost(item._id)}
+                >
+                  favorite
+                </i>
+              ) : (
+                <i
+                  className="material-icons"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => props.dispatchlikePost(item._id)}
+                >
+                  favorite
+                </i>
+              )}
+
+              {/* <i className="material-icons">thumb_up</i>
+              <i className="material-icons">thumb_down</i> */}
+              <h6>{item.likes.length} likes</h6>
               <h6>{item.title}</h6>
               <p>{item.body}</p>
               <input type="text" placeholder="please add a comment" />
@@ -36,6 +55,8 @@ const Home = (props) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchPosts: () => dispatch(actions.fetchAllPosts()),
+    dispatchlikePost: (userid) => dispatch(actions.likePost(userid)),
+    dispatchunlikePost: (userid) => dispatch(actions.unlikePost(userid)),
   };
 };
 
