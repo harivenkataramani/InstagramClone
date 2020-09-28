@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 import * as actions from "../../Redux/Actions/index";
 import "./home.css";
@@ -16,7 +17,15 @@ const Home = (props) => {
         return (
           <div className="card home__card" key={item._id}>
             <h5>
-              {item.postedBy.name}
+              <Link
+                to={
+                  item.postedBy._id !== user._id
+                    ? "/profile/" + item.postedBy._id
+                    : "/profile"
+                }
+              >
+                {item.postedBy.name}
+              </Link>
               {item.postedBy._id === user._id && (
                 <i
                   className="material-icons"

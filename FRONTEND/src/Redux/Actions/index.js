@@ -14,4 +14,9 @@ export {
   deletePost,
 } from "./createPost";
 
-export { fetchMyPosts } from "./profileActions";
+export {
+  fetchMyPosts,
+  getUserProfile,
+  followUser,
+  unFollowUser,
+} from "./profileActions";

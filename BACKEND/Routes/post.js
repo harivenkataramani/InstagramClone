@@ -51,7 +51,7 @@ router.put("/like", authorization, (req, res) => {
   Post.findByIdAndUpdate(
     req.body.postId,
     {
-      $push: { likes: req.user._id },
+      $addToSet: { likes: req.user._id },
     },
     {
       new: true,

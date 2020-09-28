@@ -22,12 +22,14 @@ require("./Model/UserModel/user");
 require("./Model/PostModel/post");
 const authRoutes = require("./Routes/auth");
 const postRoutes = require("./Routes/post");
+const userRoutes = require("./Routes/user");
 
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use(authRoutes);
 app.use(postRoutes);
+app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log(`app is running on ${PORT}`);

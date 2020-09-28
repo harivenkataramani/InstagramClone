@@ -8,6 +8,7 @@ import Profile from "../Profile/profile";
 import SignIn from "../Auth/signIn";
 import SignUp from "../Auth/signUp";
 import CreatePosts from "../Posts/CreatePosts/createPosts";
+import UserProfile from "../UserProfile/userProfile";
 import "../../Components/App/app.css";
 import * as actions from "../../Redux/Actions/index";
 
@@ -30,7 +31,8 @@ const App = (props) => {
         <Route exact path="/register" component={SignUp} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/create" component={CreatePosts} />
-        <Route exact path="/" component={Home} />
+        <Route exact path="/profile/:userid" component={UserProfile} />
+        <Route path="/" component={Home} />
       </Switch>
     </div>
   );

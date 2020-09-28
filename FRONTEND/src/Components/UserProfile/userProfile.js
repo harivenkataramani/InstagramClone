@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import * as actions from "../../Redux/Actions/index";
-import "./profile.css";
+import "./userProfile.css";
 
 const Profile = (props) => {
+  const { userid } = useParams();
+
   useEffect(() => {
-    props.getMyPosts();
+    props.dispatchgetUserProfile(userid);
   }, []);
 
   return (
     <React.Fragment>
-      {props.mypostdetails.length > 0 ? (
+      {props.userProfile ? (
         <div style={{ maxWidth: "550px", margin: "0px auto" }}>
           <div
             style={{
@@ -33,7 +36,7 @@ const Profile = (props) => {
               />
             </div>
             <div>
-              <h4>{props.userDetails.name}</h4>
+              <h4>{props.userProfile.user.name}</h4>
               <div
                 style={{
                   display: "flex",
@@ -41,14 +44,20 @@ const Profile = (props) => {
                   width: "108%",
                 }}
               >
-                <h6>40 posts</h6>
+                <h6>{props.userProfile.post.length} posts</h6>
                 <h6>40 followers</h6>
                 <h6>40 following</h6>
               </div>
+              <button
+                className="btn waves-effect waves-light #64b5f6 blue lighten-2"
+                onClick={props.dispatchFollowUser(userid)}
+              >
+                Follow
+              </button>
             </div>
           </div>
           <div className="my__posts">
-            {props.mypostdetails.map((post) => {
+            {props.userProfile.post.map((post) => {
               return (
                 <img
                   key={post._id}
@@ -61,7 +70,7 @@ const Profile = (props) => {
           </div>
         </div>
       ) : (
-        ""
+        <h2>Loading ...</h2>
       )}
     </React.Fragment>
   );
@@ -69,14 +78,17 @@ const Profile = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMyPosts: () => dispatch(actions.fetchMyPosts()),
+    dispatchgetUserProfile: (userId) =>
+      dispatch(actions.getUserProfile(userId)),
+    dispatchFollowUser: (userId) => dispatch(actions.followUser(userId)),
+    dispatchunFollowUser: (userId) => dispatch(actions.unFollowUser(userId)),
   };
 };
 
 const mapStateToProps = (state) => {
   return {
     userDetails: state.authReducer.authUserDetails,
-    mypostdetails: state.profileReducer.myposts,
+    userProfile: state.profileReducer.userProfile,
   };
 };
 

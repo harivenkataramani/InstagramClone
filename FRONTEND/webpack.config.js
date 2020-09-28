@@ -6,6 +6,7 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.join(__dirname, "/dist"),
+    publicPath: "/",
     filename: "index_bundle.js",
   },
   //line# 12-14 is needed for react-router-dom to work
