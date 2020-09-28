@@ -27,7 +27,7 @@ router.put("/follow", authorization, (req, res) => {
   User.findByIdAndUpdate(
     req.body.followId,
     {
-      $push: { followers: req.user._id },
+      $addToSet: { followers: req.user._id },
     },
     { new: true },
     (err, result) => {
@@ -36,9 +36,10 @@ router.put("/follow", authorization, (req, res) => {
       }
       User.findByIdAndUpdate(
         req.user._id,
-        { $push: { following: req.body.followId } },
+        { $addToSet: { following: req.body.followId } },
         { new: true }
       )
+        .select("-password")
         .then((result) => {
           res.json({ result });
         })
@@ -51,7 +52,7 @@ router.put("/follow", authorization, (req, res) => {
 
 router.put("/unfollow", authorization, (req, res) => {
   User.findByIdAndUpdate(
-    req.body.followId,
+    req.body.unfollowId,
     {
       $pull: { followers: req.user._id },
     },
@@ -62,9 +63,10 @@ router.put("/unfollow", authorization, (req, res) => {
       }
       User.findByIdAndUpdate(
         req.user._id,
-        { $pull: { following: req.body.followId } },
+        { $pull: { following: req.body.unfollowId } },
         { new: true }
       )
+        .select("-password")
         .then((result) => {
           res.json({ result });
         })

@@ -45,15 +45,28 @@ const Profile = (props) => {
                 }}
               >
                 <h6>{props.userProfile.post.length} posts</h6>
-                <h6>40 followers</h6>
-                <h6>40 following</h6>
+                <h6>{props.userProfile.user.followers.length} followers</h6>
+                <h6>{props.userProfile.user.following.length} following</h6>
               </div>
-              <button
-                className="btn waves-effect waves-light #64b5f6 blue lighten-2"
-                onClick={props.dispatchFollowUser(userid)}
-              >
-                Follow
-              </button>
+              {!props.userProfile.user.followers.includes(
+                props.userDetails._id
+              ) ? (
+                <button
+                  className="btn waves-effect waves-light #64b5f6 blue darken-2"
+                  style={{ margin: "10px" }}
+                  onClick={() => props.dispatchFollowUser(userid)}
+                >
+                  Follow
+                </button>
+              ) : (
+                <button
+                  className="btn waves-effect waves-light #64b5f6 blue darken-2"
+                  style={{ margin: "10px" }}
+                  onClick={() => props.dispatchunFollowUser(userid)}
+                >
+                  UnFollow
+                </button>
+              )}
             </div>
           </div>
           <div className="my__posts">

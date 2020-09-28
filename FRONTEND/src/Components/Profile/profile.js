@@ -41,9 +41,9 @@ const Profile = (props) => {
                   width: "108%",
                 }}
               >
-                <h6>40 posts</h6>
-                <h6>40 followers</h6>
-                <h6>40 following</h6>
+                <h6>{props.mypostdetails.length} posts</h6>
+                <h6>{props.myprofileDetails.followers.length} followers</h6>
+                <h6>{props.myprofileDetails.following.length} following</h6>
               </div>
             </div>
           </div>
@@ -77,6 +77,7 @@ const mapStateToProps = (state) => {
   return {
     userDetails: state.authReducer.authUserDetails,
     mypostdetails: state.profileReducer.myposts,
+    myprofileDetails: state.profileReducer.myprofile,
   };
 };
 

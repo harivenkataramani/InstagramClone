@@ -44,7 +44,6 @@ export const fetchMyPosts = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.myposts);
         dispatch(fetchMyPostSuccess(response.data.myposts));
       })
       .catch((error) => {
@@ -63,7 +62,6 @@ export const getUserProfile = (userId) => {
         },
       })
       .then((response) => {
-        console.log(response.data.myposts);
         dispatch(getUserProfileSuccess(response.data));
       })
       .catch((error) => {
@@ -75,15 +73,18 @@ export const getUserProfile = (userId) => {
 
 export const followUser = (userId) => {
   return (dispatch) => {
+    const bodyData = {
+      followId: userId,
+    };
     axios
-      .get(`http://localhost:5000//follow`, {
+      .put(`http://localhost:5000/follow`, bodyData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((response) => {
-        console.log(response.data.result);
-        dispatch(getFollowUserSuccess(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data.result));
+        dispatch(getFollowUserSuccess(response.data.result));
       })
       .catch((error) => {
         console.log("error message", error.message);
@@ -94,15 +95,18 @@ export const followUser = (userId) => {
 
 export const unFollowUser = (userId) => {
   return (dispatch) => {
+    const bodyData = {
+      unfollowId: userId,
+    };
     axios
-      .get(`http://localhost:5000/unfollow`, {
+      .put(`http://localhost:5000/unfollow`, bodyData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((response) => {
-        console.log(response.data.myposts);
-        dispatch(getUnfollowUserSuccess(response.data));
+        localStorage.setItem("user", JSON.stringify(response.data.result));
+        dispatch(getUnfollowUserSuccess(response.data.result));
       })
       .catch((error) => {
         console.log("error message", error.message);
