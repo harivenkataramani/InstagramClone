@@ -3,17 +3,17 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 
 import * as actions from "../../Redux/Actions/index";
-import "./home.css";
+import "./followedUser.css";
 
 const Home = (props) => {
   useEffect(() => {
-    props.fetchFollowingUserPosts();
+    props.fetchPosts();
   }, []);
 
   const user = JSON.parse(localStorage.getItem("user"));
   return (
     <div className="home">
-      {props.followingPosts.map((item) => {
+      {props.allPostsData.map((item) => {
         return (
           <div className="card home__card" key={item._id}>
             <h5 style={{ padding: "6px" }}>
@@ -89,7 +89,7 @@ const Home = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchFollowingUserPosts: () => dispatch(actions.followingUserPosts()),
+    fetchPosts: () => dispatch(actions.fetchAllPosts()),
     dispatchlikePost: (userid) => dispatch(actions.likePost(userid)),
     dispatchunlikePost: (userid) => dispatch(actions.unlikePost(userid)),
     dispatchPostComment: (text, userid) =>
@@ -100,7 +100,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    followingPosts: state.createPostReducer.myFollowingPosts,
+    allPostsData: state.createPostReducer.allProfilePosts,
   };
 };
 

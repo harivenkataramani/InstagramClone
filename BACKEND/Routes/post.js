@@ -88,7 +88,6 @@ router.put("/comment", authorization, (req, res) => {
     text: req.body.text,
     postedBy: req.user._id,
   };
-  console.log(comment, "****", req.body);
   Post.findByIdAndUpdate(
     req.body.postId,
     {
@@ -126,6 +125,18 @@ router.delete("/deletePost/:postid", authorization, (req, res) => {
             console.log("**error", err, "error**");
           });
       }
+    });
+});
+
+router.get("/followingPosts", authorization, (req, res) => {
+  Post.find({ postedBy: { $in: req.user.following } })
+    .populate("postedBy", "_id name")
+    .populate("comments.postedBy", "_id name")
+    .then((posts) => {
+      res.status(200).json({ posts });
+    })
+    .catch((err) => {
+      console.log(err);
     });
 });
 

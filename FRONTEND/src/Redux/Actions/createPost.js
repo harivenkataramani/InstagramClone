@@ -35,6 +35,13 @@ export const fetchPostsSuccess = (posts) => {
   };
 };
 
+export const fetchFollowingPostSuccess = (posts) => {
+  return {
+    type: actionTypes.FETCH_MY_FOLLOWING_POSTS,
+    posts,
+  };
+};
+
 export const triggerlikeposts = (result) => {
   return {
     type: actionTypes.ON_LIKE_POST,
@@ -201,6 +208,25 @@ export const deletePost = (userid) => {
       })
       .then((response) => {
         dispatch(deletePostSuccess(response.data.result));
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const followingUserPosts = () => {
+  return (dispatch) => {
+    axios
+      .get("http://localhost:5000/followingPosts", {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((response) => {
+        console.log(response.data.posts);
+        dispatch(fetchFollowingPostSuccess(response.data.posts));
       })
       .catch((error) => {
         console.log("error message", error.message);

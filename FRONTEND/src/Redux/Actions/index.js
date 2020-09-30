@@ -8,6 +8,7 @@ export {
 export {
   uploadImage,
   fetchAllPosts,
+  followingUserPosts,
   likePost,
   unlikePost,
   addComments,
