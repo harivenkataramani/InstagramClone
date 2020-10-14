@@ -1,9 +1,0 @@
-.my__posts {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
-  .each__posts {
-    width: 30%;
-  }
