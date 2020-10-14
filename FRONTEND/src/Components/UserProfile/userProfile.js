@@ -32,7 +32,7 @@ const Profile = (props) => {
                   height: "160px",
                   borderRadius: "80px",
                 }}
-                src="https://images.unsplash.com/photo-1600259791315-bb8f06f3af48?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+                src={props.userProfile.user.pic}
               />
             </div>
             <div>

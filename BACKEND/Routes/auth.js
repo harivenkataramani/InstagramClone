@@ -8,7 +8,7 @@ const { JWT_SECRET } = require("../keys");
 const authorization = require("../Middleware/requireLogin");
 
 router.post("/signup", (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, pic } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ error: "Please enter all the details" });
   }
@@ -22,6 +22,7 @@ router.post("/signup", (req, res) => {
           email,
           name,
           password: hashedpass,
+          pic,
         });
         user
           .save()
@@ -49,10 +50,13 @@ router.post("/signin", (req, res) => {
       bcrypt.compare(password, userDetails.password).then((isUser) => {
         if (isUser) {
           const token = jwt.sign({ _id: userDetails._id }, JWT_SECRET);
-          const { _id, name, email, followers, following } = userDetails;
+          const { _id, name, email, followers, following, pic } = userDetails;
           res
             .status(200)
-            .json({ token, user: { _id, name, email, followers, following } });
+            .json({
+              token,
+              user: { _id, name, email, followers, following, pic },
+            });
         } else {
           return res.status(400).json({ error: "Invalid Email or Password" });
         }

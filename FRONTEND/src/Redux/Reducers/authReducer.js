@@ -5,6 +5,7 @@ const initialState = {
   error: "",
   authToken: "",
   authUserDetails: null,
+  imageURL: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -19,6 +20,10 @@ const reducer = (state = initialState, action) => {
       return { ...state, authUserDetails: action.user, error: "" };
     case actionTypes.AUTH_FAIL:
       return { ...state, error: "Something Went Wrong" };
+    case actionTypes.UPLOAD_SUCCESS:
+      return { ...state, imageURL: action.data, error: "" };
+    case actionTypes.UPLOAD_FAIL:
+      return { ...state, error: "Something Went Wrong" };
     case actionTypes.LOGOUT_USER:
       return {
         ...state,
@@ -26,6 +31,7 @@ const reducer = (state = initialState, action) => {
         error: "",
         authToken: "",
         authUserDetails: null,
+        imageURL: "",
       };
     default:
       return state;

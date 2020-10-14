@@ -3,6 +3,7 @@ export {
   initsignInUser,
   userDetails,
   onLogout,
+  uploadPic,
 } from "./authUser";
 
 export {
@@ -20,4 +21,5 @@ export {
   getUserProfile,
   followUser,
   unFollowUser,
+  updateProfPic,
 } from "./profileActions";

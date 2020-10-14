@@ -11,6 +11,7 @@ const SignUp = (props) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [image, setImage] = useState("");
 
   useEffect(() => {
     if (props.successMessage) {
@@ -18,6 +19,16 @@ const SignUp = (props) => {
       history.push("/login");
     }
   }, [props.successMessage]);
+
+  const uploadPicture = () => {
+    const data = new FormData();
+    data.append("file", image);
+    //name of upload file name
+    data.append("upload_preset", "instagram-clone");
+    //name of the clouidanary image
+    data.append("cloud_name", "hvrimagecloud");
+    props.uploadProfilePic(data, name, email, password);
+  };
 
   const signUpUser = (e) => {
     e.preventDefault();
@@ -28,7 +39,16 @@ const SignUp = (props) => {
     ) {
       M.toast({ html: "Please enter a valid email" });
     } else {
-      props.onUserSignUp(name, email, password);
+      const bodyData = {
+        name: name,
+        email: email,
+        password: password,
+      };
+      if (image) {
+        uploadPicture();
+      } else {
+        props.onUserSignUp(bodyData);
+      }
     }
   };
 
@@ -60,6 +80,15 @@ const SignUp = (props) => {
             setPassword(e.target.value);
           }}
         />
+        <div className="file-field input-field">
+          <div className="btn #64b5f6 blue darken-1">
+            <span>Upload Your Pic</span>
+            <input type="file" onChange={(e) => setImage(e.target.files[0])} />
+          </div>
+          <div className="file-path-wrapper">
+            <input className="file-path validate" type="text" />
+          </div>
+        </div>
         <button
           className="btn waves-effect waves-light #64b5f6 blue lighten-2"
           onClick={signUpUser}
@@ -80,12 +109,15 @@ const mapDispatchToProps = (dispatch) => {
   return {
     onUserSignUp: (name, email, password) =>
       dispatch(actions.initsignUpUser(name, email, password)),
+    uploadProfilePic: (bodyData, name, email, password) =>
+      dispatch(actions.uploadPic(bodyData, name, email, password)),
   };
 };
 
 const mapStateToProps = (state) => {
   return {
     successMessage: state.authReducer.signUpMessage,
+    imgURL: state.authReducer.imageURL,
   };
 };
 

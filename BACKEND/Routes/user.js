@@ -77,4 +77,18 @@ router.put("/unfollow", authorization, (req, res) => {
   );
 });
 
+router.put("/updatePic", authorization, (req, res) => {
+  User.findByIdAndUpdate(
+    req.user._id,
+    { $set: { pic: req.body.pic } },
+    { new: true },
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({ error: "pic cannot be updated" });
+      }
+      res.json(result);
+    }
+  );
+});
+
 module.exports = router;

@@ -42,13 +42,21 @@ export const onLogout = () => {
   };
 };
 
-export const initsignUpUser = (name, email, password) => {
+export const imgUploadSucess = (data) => {
+  return {
+    type: actionTypes.PIC_UPLOAD_SUCCESS,
+    data,
+  };
+};
+
+export const imgUploadFail = () => {
+  return {
+    type: actionTypes.PIC_UPLOAD_FAIL,
+  };
+};
+
+export const initsignUpUser = (bodyData) => {
   return (dispatch) => {
-    const bodyData = {
-      name: name,
-      email: email,
-      password: password,
-    };
     console.log(bodyData);
     axios
       .post("http://localhost:5000/signup", bodyData)
@@ -87,6 +95,30 @@ export const initsignInUser = (email, password) => {
       .catch((error) => {
         console.log("error message", error.message);
         dispatch(authFailed());
+      });
+  };
+};
+
+export const uploadPic = (imgBodydata, name, email, password) => {
+  return (dispatch) => {
+    axios
+      .post(
+        "https://api.cloudinary.com/v1_1/hvrimagecloud/image/upload",
+        imgBodydata
+      )
+      .then((response) => {
+        dispatch(imgUploadSucess(response.data.secure_url));
+        const bodyData = {
+          name: name,
+          email: email,
+          password: password,
+          pic: response.data.secure_url,
+        };
+        dispatch(initsignUpUser(bodyData));
+      })
+      .catch((error) => {
+        console.log("error--------", error);
+        dispatch(imgUploadFail());
       });
   };
 };

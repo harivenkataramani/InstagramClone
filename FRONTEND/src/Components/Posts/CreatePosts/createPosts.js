@@ -10,12 +10,6 @@ const CreatePosts = (props) => {
   const [body, setBody] = useState("");
   const [image, setImage] = useState("");
 
-  // useEffect(() => {
-  //   if (props.posts) {
-  //     history.push("/");
-  //   }
-  // }, [props.posts]);
-
   const postDetails = () => {
     const data = new FormData();
     data.append("file", image);
