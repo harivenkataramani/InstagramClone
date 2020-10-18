@@ -4,6 +4,9 @@ export {
   userDetails,
   onLogout,
   uploadPic,
+  resetMessage,
+  initResetPassword,
+  initUpdatePassword,
 } from "./authUser";
 
 export {

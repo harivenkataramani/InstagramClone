@@ -10,6 +10,8 @@ import SignUp from "../Auth/signUp";
 import CreatePosts from "../Posts/CreatePosts/createPosts";
 import UserProfile from "../UserProfile/userProfile";
 import FollowedUser from "../FollowedUser/followedUser";
+import ResetPassword from "../ResetPassword/resetPassword";
+import UpdatePassword from "../UpdatePassword/updatePassword";
 import "../../Components/App/app.css";
 import * as actions from "../../Redux/Actions/index";
 
@@ -21,9 +23,12 @@ const App = (props) => {
     if (user) {
       props.userData(user);
     } else {
-      history.push("/login");
+      if (!history.location.pathname.startsWith("/resetpassword")) {
+        history.push("/login");
+      }
     }
   }, []);
+
   return (
     <div>
       <Navbar />
@@ -34,6 +39,8 @@ const App = (props) => {
         <Route exact path="/create" component={CreatePosts} />
         <Route exact path="/profile/:userid" component={UserProfile} />
         <Route exact path="/explore" component={FollowedUser} />
+        <Route exact path="/resetpassword" component={ResetPassword} />
+        <Route exact path="/resetpassword/:token" component={UpdatePassword} />
         <Route path="/" component={Home} />
       </Switch>
     </div>

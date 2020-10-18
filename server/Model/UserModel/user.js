@@ -7,7 +7,13 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   followers: [{ type: ObjectId, ref: "User" }],
   following: [{ type: ObjectId, ref: "User" }],
-  pic :{type : String, default:"https://res.cloudinary.com/hvrimagecloud/image/upload/v1602594041/NoPicInstagramProfilePic_ejy5h3.jpg"}
+  pic: {
+    type: String,
+    default:
+      "https://res.cloudinary.com/hvrimagecloud/image/upload/v1602594041/NoPicInstagramProfilePic_ejy5h3.jpg",
+  },
+  resetToken: String,
+  expireToken: Date,
 });
 
 mongoose.model("User", userSchema);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { connect } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
@@ -18,6 +18,9 @@ const SignUp = (props) => {
       M.toast({ html: props.successMessage });
       history.push("/login");
     }
+    return () => {
+      props.resetSuccessMessage();
+    };
   }, [props.successMessage]);
 
   const uploadPicture = () => {
@@ -111,6 +114,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(actions.initsignUpUser(name, email, password)),
     uploadProfilePic: (bodyData, name, email, password) =>
       dispatch(actions.uploadPic(bodyData, name, email, password)),
+    resetSuccessMessage: () => dispatch(actions.resetMessage()),
   };
 };
 

@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
-import "./auth.css";
+import "./resetPassword.css";
 import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import M from "materialize-css";
 
 import * as actions from "../../Redux/Actions/index";
 
-const Login = (props) => {
+const ResetPassword = (props) => {
   const history = useHistory();
-  const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if (props.userToken) {
-      history.push("/");
+    if (props.resetMessage) {
+      M.toast({ html: props.resetMessage });
+      history.push("/login");
     }
-  }, [props.userToken]);
+  }, [props.resetMessage]);
 
-  const signInUser = (e) => {
+  const resetPass = (e) => {
     e.preventDefault();
     if (
       !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -26,7 +26,7 @@ const Login = (props) => {
     ) {
       M.toast({ html: "Please enter a valid email" });
     } else {
-      props.onUserSignIn(email, password);
+      props.onResetPassword(email);
     }
   };
 
@@ -42,28 +42,12 @@ const Login = (props) => {
             setEmail(e.target.value);
           }}
         />
-        <input
-          type="password"
-          placeholder="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-        />
         <button
           className="btn waves-effect waves-light #64b5f6 blue darken-1"
-          onClick={signInUser}
+          onClick={resetPass}
         >
-          Login
+          Reset Password
         </button>
-        <h5>
-          <Link to="/register">
-            Don't have an account? <b>Sign Up</b>
-          </Link>
-        </h5>
-        <h6>
-          <Link to="/resetpassword">Forgot Password?</Link>
-        </h6>
       </div>
     </div>
   );
@@ -71,15 +55,14 @@ const Login = (props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUserSignIn: (email, password) =>
-      dispatch(actions.initsignInUser(email, password)),
+    onResetPassword: (email) => dispatch(actions.initResetPassword(email)),
   };
 };
 
 const mapStateToProps = (state) => {
   return {
-    userToken: state.authReducer.authToken,
+    resetMessage: state.authReducer.resetPassMessage,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

@@ -1,11 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const { JWT_SECRET } = require("../Config/keys");
 const authorization = require("../Middleware/requireLogin");
+const nodemailer = require("nodemailer");
+const sendgridTransport = require("nodemailer-sendgrid-transport");
+
+const transporter = nodemailer.createTransport(
+  sendgridTransport({
+    auth: {
+      api_key:
+        "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",
+    },
+  })
+);
 
 router.post("/signup", (req, res) => {
   const { name, email, password, pic } = req.body;
@@ -27,6 +39,12 @@ router.post("/signup", (req, res) => {
         user
           .save()
           .then((user) => {
+            transporter.sendMail({
+              to: user.email,
+              from: "hari.venkataramani18@gmail.com",
+              subject: "Sign-Up Successfull",
+              html: "<h1>Welcome to InstaGram</h1>",
+            });
             res
               .status(201)
               .json({ message: "User has been successfully registered" });
@@ -58,6 +76,67 @@ router.post("/signin", (req, res) => {
         } else {
           return res.status(400).json({ error: "Invalid Email or Password" });
         }
+      });
+    })
+    .catch((err) => console.log(err));
+});
+
+router.post("/reset-password", (req, res) => {
+  crypto.randomBytes(32, (err, buffer) => {
+    if (err) {
+      console.log(err);
+    }
+    const token = buffer.toString("hex");
+    User.findOne({ email: req.body.email }).then((user) => {
+      if (!user) {
+        return res
+          .status(400)
+          .json({ error: "User id is not avalable. Please Register" });
+      }
+      user.resetToken = token;
+      user.expireToken = Date.now() + 3600000;
+      user
+        .save()
+        .then((result) => {
+          transporter.sendMail({
+            to: user.email,
+            from: "hari.venkataramani18@gmail.com",
+            subject: "Password Reset Request",
+            html: `
+          <p>Reset Password</p>
+          <h5>Click this <a href="http://localhost:8080/resetpassword/${token}">link</a> to reset your password</h5>
+          `,
+          });
+          res.status(200).json({
+            message: "Please check your email to reset password",
+          });
+        })
+        .catch((err) => console.log(err));
+    });
+  });
+});
+
+router.post("/newpassword", (req, res) => {
+  const { password, resetPassToken } = req.body;
+  User.findOne({
+    resetToken: resetPassToken,
+    expireToken: { $gt: Date.now() },
+  })
+    .then((user) => {
+      if (!user) {
+        return res.status(400).json({
+          error: "Your Password Session Reset Link Expired! Please Try again",
+        });
+      }
+      bcrypt.hash(password, 12).then((hashedpass) => {
+        user.password = hashedpass;
+        user.resetToken = undefined;
+        user.expireToken = undefined;
+        user.save().then((savedUser) => {
+          res.status(200).json({
+            message: "New Password has been Updated",
+          });
+        });
       });
     })
     .catch((err) => console.log(err));

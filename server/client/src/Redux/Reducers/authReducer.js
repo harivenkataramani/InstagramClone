@@ -2,6 +2,8 @@ import * as actionTypes from "../Actions/actionTypes";
 
 const initialState = {
   signUpMessage: "",
+  resetPassMessage: "",
+  updatePassMessage: "",
   error: "",
   authToken: "",
   authUserDetails: null,
@@ -28,11 +30,19 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         signUpMessage: "",
+        resetPassMessage: "",
+        updatePassMessage: "",
         error: "",
         authToken: "",
         authUserDetails: null,
         imageURL: "",
       };
+    case actionTypes.RESET_AUTH_SIGNUP_MESSAGE:
+      return { ...state, signUpMessage: "", error: "" };
+    case actionTypes.RESET_PASSWORD_REQUEST:
+      return { ...state, resetPassMessage: action.message };
+    case actionTypes.UPDATE_NEW_PASSWORD:
+      return { ...state, updatePassMessage: action.message };
     default:
       return state;
   }

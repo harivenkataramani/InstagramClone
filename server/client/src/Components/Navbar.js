@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -6,6 +6,10 @@ import * as actions from "../Redux/Actions/index";
 
 const renderLinks = (props) => {
   const history = useHistory();
+
+  useEffect(() => {
+    console.log("navbar+++++++++++++++++++++");
+  }, []);
   if (props.userDetails) {
     return [
       <li>

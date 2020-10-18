@@ -57,6 +57,26 @@ export const imgUploadFail = () => {
   };
 };
 
+export const resetMessage = () => {
+  return {
+    type: actionTypes.RESET_AUTH_SIGNUP_MESSAGE,
+  };
+};
+
+export const resetPassword = (message) => {
+  return {
+    type: actionTypes.RESET_PASSWORD_REQUEST,
+    message,
+  };
+};
+
+export const updateNewPassword = (message) => {
+  return {
+    type: actionTypes.UPDATE_NEW_PASSWORD,
+    message,
+  };
+};
+
 export const initsignUpUser = (bodyData) => {
   return (dispatch) => {
     axios
@@ -120,6 +140,49 @@ export const uploadPic = (imgBodydata, name, email, password) => {
       .catch((error) => {
         console.log("error--------", error);
         dispatch(imgUploadFail());
+      });
+  };
+};
+
+export const initResetPassword = (email) => {
+  return (dispatch) => {
+    const bodyData = {
+      email: email,
+    };
+    axios
+      .post(`${baseUrl}/reset-password`, bodyData)
+      .then((response) => {
+        if (response.error) {
+          dispatch(signingUpError(response.data.error));
+        } else {
+          dispatch(resetPassword(response.data.message));
+        }
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(authFailed());
+      });
+  };
+};
+
+export const initUpdatePassword = (password, resetPassToken) => {
+  return (dispatch) => {
+    const bodyData = {
+      password,
+      resetPassToken,
+    };
+    axios
+      .post(`${baseUrl}/newpassword`, bodyData)
+      .then((response) => {
+        if (response.error) {
+          dispatch(signingUpError(response.data.error));
+        } else {
+          dispatch(updateNewPassword(response.data.message));
+        }
+      })
+      .catch((error) => {
+        console.log("error message", error.message);
+        dispatch(authFailed());
       });
   };
 };
