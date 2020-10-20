@@ -98,7 +98,7 @@ router.post("/reset-password", (req, res) => {
         .then((result) => {
           transporter.sendMail({
             to: user.email,
-            from: "hari.venkataramani18@gmail.com",
+            from: "venkata.hari18@gmail.com",
             subject: "Password Reset Request",
             html: `
           <p>Reset Password</p>
