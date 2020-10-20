@@ -112,7 +112,7 @@ const Navbar = (props) => {
                       setSearch("");
                     }}
                   >
-                    <li className="collection-item">{user.email}</li>
+                    <li className="collection-item">{user.name}</li>
                   </Link>
                 );
               })}
