@@ -81,7 +81,6 @@ const createPostreducer = (state = initialState, action) => {
         ],
       };
     case actionTypes.DELETE_POST:
-      console.log(action.result);
       return {
         ...state,
         uploadError: "",

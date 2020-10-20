@@ -123,7 +123,7 @@ router.delete("/deletePost/:postid", authorization, (req, res) => {
             res.json({ result });
           })
           .catch((err) => {
-            console.log("**error", err, "error**");
+            console.log(err);
           });
       }
     });

@@ -25,4 +25,5 @@ export {
   followUser,
   unFollowUser,
   updateProfPic,
+  onInitFetchSearchedUsers,
 } from "./profileActions";

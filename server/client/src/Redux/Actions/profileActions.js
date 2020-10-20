@@ -53,7 +53,12 @@ export const updateImageSuccess = (result) => {
   };
 };
 
-updateImageSuccess;
+export const fetchSearchedUsers = (users) => {
+  return {
+    type: actionTypes.FETCH_SEARCH_USERS,
+    users,
+  };
+};
 
 export const fetchMyPosts = () => {
   return (dispatch) => {
@@ -67,7 +72,6 @@ export const fetchMyPosts = () => {
         dispatch(fetchMyPostSuccess(response.data.myposts));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(fetchMyPostFail());
       });
   };
@@ -85,7 +89,6 @@ export const getUserProfile = (userId) => {
         dispatch(getUserProfileSuccess(response.data));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(fetchMyPostFail());
       });
   };
@@ -107,7 +110,6 @@ export const followUser = (userId) => {
         dispatch(getFollowUserSuccess(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(fetchMyPostFail());
       });
   };
@@ -129,7 +131,6 @@ export const unFollowUser = (userId) => {
         dispatch(getUnfollowUserSuccess(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(fetchMyPostFail());
       });
   };
@@ -150,7 +151,6 @@ export const updateImage = (imgUrl) => {
         dispatch(updateImageSuccess(response.data));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(fetchMyPostFail());
       });
   };
@@ -168,7 +168,22 @@ export const updateProfPic = (imgBodydata) => {
         dispatch(updateImage(response.data.secure_url));
       })
       .catch((error) => {
-        console.log("error--------", error);
+        dispatch(fetchMyPostFail());
+      });
+  };
+};
+
+export const onInitFetchSearchedUsers = (query) => {
+  return (dispatch) => {
+    const bodyData = {
+      query,
+    };
+    axios
+      .post(`${baseUrl}/search-users`, bodyData)
+      .then((response) => {
+        dispatch(fetchSearchedUsers(response.data));
+      })
+      .catch((error) => {
         dispatch(fetchMyPostFail());
       });
   };

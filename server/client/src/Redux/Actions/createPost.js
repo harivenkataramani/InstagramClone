@@ -110,7 +110,6 @@ export const uploadImage = (bodyData, title, body, history) => {
         dispatch(createPost(body, title, response.data.secure_url, history));
       })
       .catch((error) => {
-        console.log("error--------", error);
         dispatch(imgUploadFail());
       });
   };
@@ -125,11 +124,9 @@ export const fetchAllPosts = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.posts);
         dispatch(fetchPostsSuccess(response.data.posts));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };
@@ -150,7 +147,6 @@ export const likePost = (userid) => {
         dispatch(triggerlikeposts(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };
@@ -171,7 +167,6 @@ export const unlikePost = (userid) => {
         dispatch(triggerunlikeposts(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };
@@ -193,7 +188,6 @@ export const addComments = (text, postId) => {
         dispatch(postComment(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };
@@ -211,7 +205,6 @@ export const deletePost = (userid) => {
         dispatch(deletePostSuccess(response.data.result));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };
@@ -226,11 +219,9 @@ export const followingUserPosts = () => {
         },
       })
       .then((response) => {
-        console.log(response.data.posts);
         dispatch(fetchFollowingPostSuccess(response.data.posts));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(imgUploadFail());
       });
   };

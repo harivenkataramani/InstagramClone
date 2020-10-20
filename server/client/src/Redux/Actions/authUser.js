@@ -88,7 +88,6 @@ export const initsignUpUser = (bodyData) => {
         dispatch(signUpUser(response.data.message));
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(authFailed());
       });
   };
@@ -100,7 +99,6 @@ export const initsignInUser = (email, password) => {
       email: email,
       password: password,
     };
-    console.log(bodyData);
     axios
       .post(`${baseUrl}/signin`, bodyData)
       .then((response) => {
@@ -114,7 +112,6 @@ export const initsignInUser = (email, password) => {
         }
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(authFailed());
       });
   };
@@ -138,7 +135,6 @@ export const uploadPic = (imgBodydata, name, email, password) => {
         dispatch(initsignUpUser(bodyData));
       })
       .catch((error) => {
-        console.log("error--------", error);
         dispatch(imgUploadFail());
       });
   };
@@ -159,7 +155,6 @@ export const initResetPassword = (email) => {
         }
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(authFailed());
       });
   };
@@ -181,7 +176,6 @@ export const initUpdatePassword = (password, resetPassToken) => {
         }
       })
       .catch((error) => {
-        console.log("error message", error.message);
         dispatch(authFailed());
       });
   };

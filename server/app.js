@@ -32,7 +32,6 @@ app.use(postRoutes);
 app.use(userRoutes);
 
 if (process.env.NODE_ENV === "production") {
-  console.log("check");
   app.use(express.static("client/dist"));
   const path = require("path");
   app.get("*", (req, res) => {

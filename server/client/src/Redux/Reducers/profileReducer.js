@@ -6,6 +6,7 @@ const initialState = {
   userProfile: null,
   myprofile: null,
   fetchPosts: false,
+  searchedUsers: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -59,6 +60,7 @@ const reducer = (state = initialState, action) => {
         userProfile: null,
         myprofile: null,
         fetchPosts: false,
+        searchedUsers: [],
       };
     case actionTypes.PIC_UPDATE_SUCCESS:
       return {
@@ -69,6 +71,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         myprofile: action.result,
+      };
+    case actionTypes.FETCH_SEARCH_USERS:
+      return {
+        ...state,
+        searchedUsers: action.users,
       };
     default:
       return state;
